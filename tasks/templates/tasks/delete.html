@@ -1,0 +1,58 @@
+{% extends 'tasks/base.html' %}
+{% block content %}
+    <h3 style="text-align: center; color: #5D3F8B; font-family: 'Arial', sans-serif; margin-top: 20px;">Delete Confirmation</h3>
+
+    <div style="display: flex; justify-content: center; align-items: center; min-height: 60vh; background: #d0dbc7; padding: 10px;"> <!-- Reduced min-height -->
+        <div style="background-color: #fff; border-radius: 12px; box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); padding: 30px; max-width: 600px; width: 100%;">
+            <p style="text-align: center;">Are you sure you want to delete "<strong>{{ item }}</strong>"?</p>
+
+            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                <a href="{% url 'list' %}" class="btn btn-cancel" style="padding: 12px; background-color: #747474; color: black; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; text-decoration: none;">Cancel</a>
+
+                <form method="POST" action="" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-confirm" value="Confirm" 
+                        style="padding: 12px; background-color: #BA2121; color: white; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; ">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional inline CSS for responsiveness -->
+    <style>
+        .btn-cancel:hover {
+            background-color: #e6b800; /* Darken Cancel button on hover */
+            transform: scale(1.05);
+        }
+
+        .btn-confirm:hover {
+            background-color: #6A0572; /* Darken Confirm button on hover */
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            h3 {
+                font-size: 24px;
+            }
+
+            div[style*="max-width"] {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            div[style*="max-width"] {
+                padding: 15px;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            .btn-cancel, .btn-confirm {
+                font-size: 16px;
+                padding: 10px;
+            }
+        }
+    </style>
+{% endblock %}

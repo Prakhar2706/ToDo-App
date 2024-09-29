@@ -1,0 +1,242 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+<div style="background: linear-gradient(135deg, #e0ece4, #f7f3e9); padding: 10px; min-height: 100vh;">
+    <div style="max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease;">
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <h3 style="text-align: center; color: #2b6777; font-family: 'Arial', sans-serif; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px;">Add Your Task</h3>
+
+            <!-- Form to create a new task -->
+            <div style="background: #fff; padding: 30px; border: 2px solid #2b6777; border-radius: 12px; box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1); margin-bottom: 30px; width: 100%; transform: scale(1); transition: all 0.3s ease;">
+                <form method="POST" action="/" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 20px;">
+                    {% csrf_token %}
+
+                    <h5 style="color: #2b6777; font-family: 'Arial', sans-serif; margin-bottom: 0px; font-size: 18px; font-weight: bold;">Task Title :</h5>
+                    <div style="border: 2px solid #2b6777; padding: 10px; border-radius: 8px;">
+                        {{ form.title }}
+                    </div>
+
+                    <h5 style="color: #2b6777; font-family: 'Arial', sans-serif; margin-bottom: 0px; font-size: 18px; font-weight: bold;">Task Description :</h5>
+                    <div style="border: 2px solid #2b6777; padding: 10px; border-radius: 8px;">
+                        {{ form.description }}
+                    </div>
+
+                    <h5 style="color: #2b6777; font-family: 'Arial', sans-serif; margin-bottom: 0px; font-size: 18px; font-weight: bold;">Task Date And Time :</h5>
+                    <div style="border: 2px solid #2b6777; padding: 10px; border-radius: 8px;">
+                        {{ form.due_date }}
+                    </div>
+
+                    <div style="display: flex; align-items: center;">
+                        <h5 style="color: #2b6777; font-family: 'Arial', sans-serif; font-size: 18px; font-weight: bold; padding-right: 10px;">Task Priority:</h5>
+                        <div>
+                            {{ form.priority }}
+                        </div>
+                    </div>
+
+                    <h5 style="color: #2b6777; font-family: 'Arial', sans-serif; margin-bottom: 0px; font-size: 18px; font-weight: bold;">Attach File (optional):</h5>
+                    <div style="border: 2px solid #2b6777; padding: 10px; border-radius: 8px;">
+                        {{ form.file_attachment }}
+                    </div>
+
+                    <input type="submit" value="Create Task" 
+                        style="padding: 12px; background: #417690; color: white; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); margin-top: 10px;">
+                </form>
+            </div>
+
+            <!-- Task list -->
+            <div style="width: 100%;">
+                <h3 style="text-align: center; color: #2b6777; font-family: 'Arial', sans-serif; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px;">Your Tasks</h3>
+
+                <!-- Search Form -->
+                <div style="margin-bottom: 30px; text-align: center;">
+                    <form method="GET" style="display: inline-flex; gap: 10px; justify-content: center;">
+                        <input type="text" name="search" placeholder="Search tasks..." style="padding: 5px; border-radius: 5px; border: 1px solid #2b6777; width: 200px; transition: border-color 0.3s;">
+                        <input type="submit" value="Search" style="padding: 5px; background: #417690; color: white; border: none; cursor: pointer; border-radius: 5px; transition: background-color 0.3s;">
+                    </form>
+                </div>
+
+                <!-- Filter Buttons -->
+                <div style="margin-bottom: 30px; text-align: center; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+                    <span style="color: #2b6777; font-weight: bold; font-size: 20px;">Filter by:</span>
+                    <a href="?filter=all" style="color: #ffffff; font-weight: bold; text-decoration: none; padding: 10px 20px; background: #2b6777; border-radius: 8px; transition: background-color 0.3s;">All Tasks</a>
+                    <a href="?filter=priority" style="color: #ffffff; font-weight: bold; text-decoration: none; padding: 10px 20px; background: #2b6777; border-radius: 8px; transition: background-color 0.3s;">Priority Tasks</a>
+                    <form method="GET" style="display: inline;">
+                        <input type="date" name="due_date" style="padding: 5px; border-radius: 5px; border: 1px solid #2b6777;">
+                        <input type="submit" value="Filter by Date" style="padding: 5px; background: #417690; color: white; border: none; cursor: pointer; border-radius: 5px; transition: background-color 0.3s;">
+                    </form>
+                </div>
+
+                <!-- Table header -->
+                <div class="table-header" style="background-color: #2b6777; padding: 10px; color: white; font-weight: bold; display: grid; grid-template-columns: 1fr 2fr 3fr 2fr 1fr; border-radius: 6px;">
+                    <div class="header-item s-no">S.No.</div>
+                    <div class="header-item task">Task</div>
+                    <div class="header-item description">Description</div>
+                    <div class="header-item date-time">Date & Time</div>
+                    <div class="header-item actions">Actions</div>
+                </div>
+
+                <!-- Tasks list -->
+                {% for task in tasks %}
+                <div style="display: grid; grid-template-columns: 1fr 2fr 3fr 2fr 1fr; padding: 15px; border-bottom: 1px solid #ddd; transition: background-color 0.3s, transform 0.3s ease; align-items: center; {% if task.priority %} background-color: #ffdddd; {% endif %} transform: scale(1);">
+                    <!-- Task index -->
+                    <div>{{ forloop.counter }}.</div>
+
+                    <!-- Task title -->
+                    <div>
+                        {% if task.complete %}
+                        <strike>{{ task.title }}</strike>
+                        {% else %}
+                        {{ task.title }}
+                        {% endif %}
+                    </div>
+
+                    <!-- Task description -->
+                    <div style="position: relative;">
+                        {{ task.description }}
+                        {% if task.file_attachment %}
+                        <a href="{{ task.file_attachment.url }}" target="_blank" style="margin-left: 10px; color: #4A90E2; text-decoration: none; transition: transform 0.3s; font-size: 1.5rem; font-weight: bold;">
+                            <i class="fas fa-paperclip"></i> <!-- Font Awesome paperclip icon -->
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    <!-- Task due date -->
+                    <div>{{ task.due_date }}</div>
+
+                    <!-- Actions (edit, complete, delete) -->
+                    <div class="actions-column" style="display: flex; flex-direction: column; gap: 10px; justify-content: center; align-items: center;">
+                        <a href="{% url 'update_task' task.id %}" style="font-size: 1.5rem; color: #4A90E2; text-decoration: none; transition: transform 0.3s;">
+                            ✏️
+                        </a>
+                        <a href="{% url 'complete_task' task.id %}" 
+                            style="font-size: 1.5rem; color: #4A90E2; text-decoration: none; transition: transform 0.3s;">
+                                {% if task.complete %}
+                                    ❌ <!-- Cross symbol when task is complete -->
+                                {% else %}
+                                    ✔️ <!-- Checkmark symbol when task is not complete -->
+                                {% endif %}
+                        </a>
+                        <a href="{% url 'delete' task.id %}" style="font-size: 1.5rem; color: #ff0000; text-decoration: none; transition: transform 0.3s;">🗑️</a>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- Empty state message -->
+                {% if not tasks %}
+                <div style="text-align: center; font-size: 18px; color: #999;">No tasks available.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional inline CSS for responsiveness and visual improvements -->
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    form input[type="text"], form input[type="date"], form textarea {
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #5D3F8B;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    form input[type="text"]:focus, form input[type="date"]:focus, form textarea:focus {
+        border-color: #6ebb4d;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transform: scale(1.05);
+    }
+
+    input[type="submit"]:hover {
+        background-color: #4e9f3d;
+        transform: scale(1.05);
+    }
+
+    .actions-column a:hover {
+        transform: scale(1.15);
+    }
+
+    .table-header {
+        border-radius: 6px;
+        transition: background-color 0.3s;
+    }
+
+    .table-header:hover {
+        background-color: #3a5c5f; /* Darker shade on hover */
+    }
+
+    @media (max-width: 768px) {
+        .table-header, .table-row {
+            grid-template-columns: 1fr 1fr 2fr 1fr;
+        }
+
+        .table-row .actions-column {
+            flex-direction: column;
+        }
+
+        .task-container {
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .s-no::before {
+            content: 'S. No.';
+            visibility: visible;
+            position: absolute;
+            left: 0;
+            padding-left: 10px;
+        }
+
+        .task::before {
+            content: 'Task';
+            visibility: visible;
+            position: absolute;
+            left: 0;
+            padding-left: 10px;
+        }
+
+        .description::before {
+            content: 'Desc';
+            visibility: visible;
+            position: absolute;
+            left: 0;
+            padding-left: 10px;
+        }
+
+        .date-time::before {
+            content: 'D & T';
+            visibility: visible;
+            position: absolute;
+            left: 0;
+            padding-left: 10px;
+        }
+
+        .actions::before {
+            content: 'Action';
+            visibility: visible;
+            position: absolute;
+            left: 0;
+            padding-left: 10px;
+        }
+
+        /* Hide original text */
+        .s-no, .task, .description, .date-time, .actions {
+            visibility: hidden;
+            position: relative;
+        }
+    }
+
+    a:hover {
+        color: #2b6777; /* Change color on hover */
+        transform: scale(1.1); /* Slightly enlarge the icon on hover */
+    }
+</style>
+{% endblock %}

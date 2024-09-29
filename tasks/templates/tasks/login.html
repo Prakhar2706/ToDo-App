@@ -1,0 +1,73 @@
+{% extends 'tasks/base.html' %}
+{% block content %}
+
+<h2 style="text-align: center; color: #417690; margin-bottom: 20px; margin-top: 10px;">Login</h2>
+<div class="login-container" style="max-width: 400px; margin: 50px auto; padding: 20px; background-color: #ffffff; border-radius: 15px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); position: relative;">
+    
+    <!-- Display error messages if any -->
+    {% if form.errors %}
+        <div class="alert alert-danger" style="color: red; text-align: center; margin-bottom: 15px;">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <form method="POST" style="animation: fadeIn 1.2s ease-in-out;">
+        {% csrf_token %}
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label for="username" style="font-weight: bold; margin-bottom: 5px; display: block; color: #333;">Username:</label>
+            <input type="text" name="username" class="form-control" placeholder="Enter your username" required style="width: 100%; padding: 2px; border: 2px solid #417690; border-radius: 8px; transition: all 0.3s ease;">
+        </div>
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label for="password" style="font-weight: bold; margin-bottom: 5px; display: block; color: #333;">Password:</label>
+            <input type="password" name="password" class="form-control" placeholder="Enter your password" required style="width: 100%; padding: 2px; border: 2px solid #417690; border-radius: 8px; transition: all 0.3s ease;">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; background-color: #417690; color: white; padding: 0px; border: none; border-radius: 8px; font-size: 16px; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 123, 255, 0.5);">
+            Login
+        </button>
+        <div class="login-links" style="text-align: center; margin-top: 20px;">
+            <a href="{% url 'register' %}" style="color: #417690; text-decoration: none; margin-right: 100px; font-size: 14px;">Register</a>
+            <a href="{% url 'forgot_password' %}" style="color: #417690; text-decoration: none; font-size: 14px;">Forgot Password?</a>
+        </div>
+    </form>
+</div>
+
+<!-- Animations -->
+<style>
+    /* Fade In Animation */
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Hover effects on input fields and button */
+    .form-control:hover, .form-control:focus {
+        border-color: #0056b3;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+        box-shadow: 0 6px 16px rgba(0, 123, 255, 0.6);
+        transform: translateY(-2px);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.5);
+    }
+</style>
+
+{% endblock %}

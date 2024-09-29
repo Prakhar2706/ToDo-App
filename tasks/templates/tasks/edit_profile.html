@@ -1,0 +1,39 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 600px; margin: auto; background: linear-gradient(135deg, #f7f7f7, #e0e0e0); border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); padding: 20px; transition: transform 0.3s ease; margin-bottom: 20px;">
+    <h2 style="text-align: center; color: #417690;">Edit Profile</h2>
+
+    <p style="text-align: center; color: #417690; font-size: 1.2rem; margin-top: 20px; margin-bottom: 20px; font-family: 'Arial', sans-serif;">
+        Username: <strong>{{ user.username }}</strong>
+    </p>
+    
+    <form method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 20px;">
+        {% csrf_token %}
+        
+        {% if profile.profile_image %}
+            <div class="mb-3" style="text-align: center;">
+                <img src="{{ profile.profile_image.url }}" alt="Profile Image" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; transition: transform 0.3s ease; border: 2px solid #417690;">
+            </div>
+            <button type="submit" name="clear_image" class="btn btn-danger" style="background-color: #e74c3c; color: white; transition: background-color 0.3s ease, transform 0.3s ease; border: none; border-radius: 5px;">Clear Image</button>
+        {% endif %}
+
+        <div class="form-group">
+            <label for="first_name" style="color: #417690;">First Name:</label>
+            <input type="text" id="first_name" name="first_name" value="{{ profile.first_name }}" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 100%;" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="last_name" style="color: #417690;">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" value="{{ profile.last_name }}" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 100%;" required>
+        </div>
+
+        <div class="form-group">
+            <label for="profile_image" style="color: #417690;">Profile Image:</label>
+            <input type="file" id="profile_image" name="profile_image" accept="image/*" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="background-color: #417690; color: white; transition: background-color 0.3s ease, transform 0.3s ease; border: none; border-radius: 5px;">Save Changes</button>
+    </form>
+</div>
+{% endblock %}
