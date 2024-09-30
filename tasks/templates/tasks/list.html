@@ -186,9 +186,9 @@
         }
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 550px) {
         .s-no::before {
-            content: 'S. No.';
+            content: '#';
             visibility: visible;
             position: absolute;
             left: 0;
@@ -221,6 +221,54 @@
 
         .actions::before {
             content: 'Action';
+            visibility: visible;
+            position: absolute;
+            left: 0;
+            padding-left: 10px;
+        }
+
+        /* Hide original text */
+        .s-no, .task, .description, .date-time, .actions {
+            visibility: hidden;
+            position: relative;
+        }
+    }
+
+    @media (max-width: 350px) {
+        .s-no::before {
+            content: '#';
+            visibility: visible;
+            position: absolute;
+            left: 0;
+            padding-left: 10px;
+        }
+
+        .task::before {
+            content: '📝';
+            visibility: visible;
+            position: absolute;
+            left: 0;
+            padding-left: 10px;
+        }
+
+        .description::before {
+            content: '📜';
+            visibility: visible;
+            position: absolute;
+            left: 0;
+            padding-left: 10px;
+        }
+
+        .date-time::before {
+            content: '📅';
+            visibility: visible;
+            position: absolute;
+            left: 0;
+            padding-left: 10px;
+        }
+
+        .actions::before {
+            content: '⚙️';
             visibility: visible;
             position: absolute;
             left: 0;
