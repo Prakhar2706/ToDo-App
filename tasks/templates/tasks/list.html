@@ -1,13 +1,13 @@
 {% extends 'tasks/base.html' %}
 
 {% block content %}
-<div style="background: linear-gradient(135deg, #e0ece4, #f7f3e9); padding: 10px; min-height: 100vh;">
-    <div style="max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease;">
+<div style="background: linear-gradient(135deg, #000, #f7f3e9); padding: 10px; min-height: 100vh;">
+    <div style="max-width: 1000px; margin: 0 auto; background: #ddd; padding: 10px; border-radius: 20px; box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease;">
         <div style="display: flex; flex-direction: column; align-items: center;">
             <h3 style="text-align: center; color: #2b6777; font-family: 'Arial', sans-serif; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px;">Add Your Task</h3>
 
             <!-- Form to create a new task -->
-            <div style="background: #fff; padding: 30px; border: 2px solid #2b6777; border-radius: 12px; box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1); margin-bottom: 30px; width: 100%; transform: scale(1); transition: all 0.3s ease;">
+            <div style="background: #ddd; padding: 30px; border: 2px solid #2b6777; border-radius: 12px; box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1); margin-bottom: 30px; width: 100%; transform: scale(1); transition: all 0.3s ease;">
                 <form method="POST" action="/" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 20px;">
                     {% csrf_token %}
 
@@ -77,7 +77,11 @@
 
                 <!-- Tasks list -->
                 {% for task in tasks %}
-                <div style="display: grid; grid-template-columns: 1fr 2fr 3fr 2fr 1fr; padding: 15px; border-bottom: 1px solid #ddd; transition: background-color 0.3s, transform 0.3s ease; align-items: center; {% if task.priority %} background-color: #ffdddd; {% endif %} transform: scale(1);">
+                <div style="display: grid; grid-template-columns: 1fr 2fr 3fr 2fr 1fr;
+                border-radius: 20px; padding: 15px; border-bottom: 5px solid #ddd; 
+                transition: background-color 0.3s, transform 0.3s ease; 
+                align-items: center; {% if task.priority %} background-color: #ffdddd; 
+                {% endif %} transform: scale(1);">
                     <!-- Task index -->
                     <div>{{ forloop.counter }}.</div>
 
@@ -132,6 +136,13 @@
 
 <!-- Additional inline CSS for responsiveness and visual improvements -->
 <style>
+    .content-wrapper {
+        flex: 1;
+        background: linear-gradient(145deg, #fff, #e0e0e0);
+        padding: 0px;
+        box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
     body {
         font-family: 'Arial', sans-serif;
         margin: 0;

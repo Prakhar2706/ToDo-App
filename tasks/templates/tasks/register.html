@@ -2,14 +2,24 @@
 {% load widget_tweaks %}
 
 {% block content %}
-<h2 style="text-align: center; color: #417690; margin-bottom: 20px; margin-top: 10px;">Register</h2>
-<div class="register-container" style="max-width: 500px; margin: 0 auto; padding: 20px; background-color: #f8f9fa; border-radius: 10px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); margin-bottom: 20px;">
+<h2 style="text-align: center; color: #ffffff; margin-bottom: 20px; margin-top: 10px; font-size: 2rem; font-weight: bold; letter-spacing: 1.2px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">
+    Create Your Account
+</h2>
+
+<div class="register-container" style="max-width: 450px; margin: 50px auto; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); position: relative; animation: slideIn 1.5s ease-in-out;background: url('https://media.giphy.com/media/p6EDJOPtyd0DJSuDef/giphy.gif?cid=ecf05e47ihu28mx1td7fe8wmywhgdn7h51gjlhj13g9y1tep&ep=v1_gifs_search&rid=giphy.gif&ct=g') no-repeat center center fixed; 
+    background-size: cover;">
+
     <form method="POST" style="animation: fadeIn 1.2s ease-in-out;">
         {% csrf_token %}
+        <!-- Display error messages if any -->
         {% if form.non_field_errors %}
-            <div style="color: red; text-align: center;">{{ form.non_field_errors }}</div>
+            <div style="color: red; text-align: center; margin-bottom: 15px;">
+                {{ form.non_field_errors }}
+            </div>
         {% endif %}
-        <div class="form-group" style="margin-bottom: 10px;">
+
+        <!-- Username -->
+        <div class="form-group" style="margin-bottom: 25px;">
             {{ form.username.label_tag|safe }}
             {{ form.username|add_class:"form-control"|attr:"placeholder:Enter your username" }}
             {% if form.username.errors %}
@@ -17,14 +27,17 @@
             {% endif %}
         </div>
 
-        <div class="form-group" style="margin-bottom: 10px;">
+        <!-- First Name -->
+        <div class="form-group" style="margin-bottom: 25px;">
             {{ form.first_name.label_tag|safe }}
             {{ form.first_name|add_class:"form-control"|attr:"placeholder:Enter your first name" }}
             {% if form.first_name.errors %}
                 <div style="color: red;">{{ form.first_name.errors }}</div>
             {% endif %}
         </div>
-        <div class="form-group" style="margin-bottom: 10px;">
+
+        <!-- Last Name -->
+        <div class="form-group" style="margin-bottom: 25px;">
             {{ form.last_name.label_tag|safe }}
             {{ form.last_name|add_class:"form-control"|attr:"placeholder:Enter your last name" }}
             {% if form.last_name.errors %}
@@ -32,32 +45,76 @@
             {% endif %}
         </div>
 
-        <div class="form-group" style="margin-bottom: 10px;">
+        <!-- Email -->
+        <div class="form-group" style="margin-bottom: 25px;">
             {{ form.email.label_tag|safe }}
             {{ form.email|add_class:"form-control"|attr:"placeholder:Enter your email" }}
+            {% if form.email.errors %}
+                <div style="color: red;">{{ form.email.errors }}</div>
+            {% endif %}
         </div>
-        <div class="form-group" style="margin-bottom: 10px;">
+
+        <!-- Password1 -->
+        <div class="form-group" style="margin-bottom: 25px;">
             {{ form.password1.label_tag|safe }}
             {{ form.password1|add_class:"form-control"|attr:"placeholder:Enter your password" }}
             {% if form.password1.errors %}
                 <div style="color: red;">{{ form.password1.errors }}</div>
             {% endif %}
         </div>
-        <div class="form-group" style="margin-bottom: 10px;">
+
+        <!-- Password2 -->
+        <div class="form-group" style="margin-bottom: 25px;">
             {{ form.password2.label_tag|safe }}
             {{ form.password2|add_class:"form-control"|attr:"placeholder:Confirm your password" }}
             {% if form.password2.errors %}
                 <div style="color: red;">{{ form.password2.errors }}</div>
             {% endif %}
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; background-color: #417690; padding: 0px; border: none; border-radius: 5px; font-size: 16px; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 123, 255, 0.5); animation: pulse 2s infinite;">
+
+        <!-- Register Button -->
+        <button type="submit" class="btn btn-primary" style="width: 100%; background: linear-gradient(145deg, #007bff, #417690); color: white; padding: 12px 0; border: none; border-radius: 12px; font-size: 18px; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(0, 123, 255, 0.5);">
             Register
         </button>
-        <a href="{% url 'login' %}" class="login-link" style="display: block; text-align: center; margin-top: 15px; color: #417690; text-decoration: none;">Already have an account? Login</a>
+
+        <!-- Link to Login -->
+        <div class="login-links" style="text-align: center; margin-top: 20px;">
+            <a href="{% url 'login' %}" style="
+                color: #ffffff; 
+                text-decoration: none; 
+                font-size: 14px; 
+                background-color: rgba(0, 0, 0, 0.5); /* Add a subtle background */
+                padding: 5px 10px; 
+                border-radius: 5px; 
+                text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6); /* Add text shadow for better visibility */
+                transition: color 0.3s ease, background-color 0.3s ease;">
+                Already have an account? Login
+            </a>
+        </div>
     </form>
 </div>
 
+<!-- Animations and Styles -->
 <style>
+    .content-wrapper {
+        flex: 1;
+        background: linear-gradient(145deg, #000, #e0e0e0);
+        padding: 30px;
+        box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+    }
+    /* Slide In Animation for container */
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Fade In Animation for form */
     @keyframes fadeIn {
         0% {
             opacity: 0;
@@ -69,37 +126,27 @@
         }
     }
 
-    @keyframes pulse {
-        0% {
-            transform: scale(1);
-            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.5);
-        }
-        50% {
-            transform: scale(1.05);
-            box-shadow: 0 6px 16px rgba(0, 123, 255, 0.8);
-        }
-        100% {
-            transform: scale(1);
-            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.5);
-        }
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 10px;
-        border: 2px solid #ced4da;
-        border-radius: 5px;
-        transition: all 0.3s ease;
-    }
-
+    /* Hover effects on input fields and button */
     .form-control:hover, .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+        border-color: #0056b3;
+        box-shadow: 0 0 12px rgba(0, 123, 255, 0.4);
     }
 
     .btn:hover {
-        background-color: #0056b3;
-        box-shadow: 0 6px 16px rgba(0, 123, 255, 0.6);
+        background: linear-gradient(145deg, #0056b3, #6c83f7);
+        box-shadow: 0 10px 30px rgba(0, 123, 255, 0.6);
+        transform: translateY(-3px);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+        box-shadow: 0 8px 20px rgba(0, 123, 255, 0.5);
+    }
+
+    /* Link hover effects */
+    .login-links a:hover {
+        color: #0056b3;
+        text-decoration: underline;
     }
 </style>
 

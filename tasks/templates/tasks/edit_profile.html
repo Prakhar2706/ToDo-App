@@ -1,39 +1,76 @@
 {% extends 'tasks/base.html' %}
 
 {% block content %}
-<div class="container mt-5" style="max-width: 600px; margin: auto; background: linear-gradient(135deg, #f7f7f7, #e0e0e0); border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); padding: 20px; transition: transform 0.3s ease; margin-bottom: 20px;">
-    <h2 style="text-align: center; color: #417690;">Edit Profile</h2>
+<div style="background: linear-gradient(135deg, #000, #f7f3e9); padding: 10px; min-height: 100vh;">
+    <div style="max-width: 600px; margin: 0 auto; background: #ddd; padding: 30px; border-radius: 20px; box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease; margin-bottom: 30px;">
+        <h2 style="text-align: center; color: #2b6777; font-family: 'Arial', sans-serif; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px;">Edit Profile</h2>
 
-    <p style="text-align: center; color: #417690; font-size: 1.2rem; margin-top: 20px; margin-bottom: 20px; font-family: 'Arial', sans-serif;">
-        Username: <strong>{{ user.username }}</strong>
-    </p>
-    
-    <form method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 20px;">
-        {% csrf_token %}
-        
-        {% if profile.profile_image %}
-            <div class="mb-3" style="text-align: center;">
-                <img src="{{ profile.profile_image.url }}" alt="Profile Image" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; transition: transform 0.3s ease; border: 2px solid #417690;">
+        <p style="text-align: center; color: #2b6777; font-size: 1.2rem; margin-top: 20px; margin-bottom: 20px; font-family: 'Arial', sans-serif;">
+            Username: <strong>{{ user.username }}</strong>
+        </p>
+
+        <form method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 20px;">
+            {% csrf_token %}
+
+            {% if profile.profile_image %}
+                <div class="mb-3" style="text-align: center;">
+                    <img src="{{ profile.profile_image.url }}" alt="Profile Image" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; transition: transform 0.3s ease; border: 2px solid #2b6777;">
+                </div>
+                <button type="submit" name="clear_image" class="btn btn-danger" style="background-color: #e74c3c; color: white; transition: background-color 0.3s ease, transform 0.3s ease; border: none; border-radius: 5px;">Clear Image</button>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="first_name" style="color: #2b6777;">First Name:</label>
+                <input type="text" id="first_name" name="first_name" value="{{ profile.first_name }}" style="padding: 10px; border: 2px solid #2b6777; border-radius: 8px; width: 100%;" required>
             </div>
-            <button type="submit" name="clear_image" class="btn btn-danger" style="background-color: #e74c3c; color: white; transition: background-color 0.3s ease, transform 0.3s ease; border: none; border-radius: 5px;">Clear Image</button>
-        {% endif %}
 
-        <div class="form-group">
-            <label for="first_name" style="color: #417690;">First Name:</label>
-            <input type="text" id="first_name" name="first_name" value="{{ profile.first_name }}" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 100%;" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="last_name" style="color: #417690;">Last Name:</label>
-            <input type="text" id="last_name" name="last_name" value="{{ profile.last_name }}" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 100%;" required>
-        </div>
+            <div class="form-group">
+                <label for="last_name" style="color: #2b6777;">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" value="{{ profile.last_name }}" style="padding: 10px; border: 2px solid #2b6777; border-radius: 8px; width: 100%;" required>
+            </div>
 
-        <div class="form-group">
-            <label for="profile_image" style="color: #417690;">Profile Image:</label>
-            <input type="file" id="profile_image" name="profile_image" accept="image/*" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
-        </div>
+            <div class="form-group">
+                <label for="profile_image" style="color: #2b6777;">Profile Image:</label>
+                <input type="file" id="profile_image" name="profile_image" accept="image/*" style="padding: 10px; border: 2px solid #2b6777; border-radius: 8px; width: 100%;">
+            </div>
 
-        <button type="submit" class="btn btn-primary" style="background-color: #417690; color: white; transition: background-color 0.3s ease, transform 0.3s ease; border: none; border-radius: 5px;">Save Changes</button>
-    </form>
+            <button type="submit" class="btn btn-primary" style="padding: 12px; background: #2b6777; color: white; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);">Save Changes</button>
+        </form>
+    </div>
 </div>
+
+<!-- Additional inline CSS for responsiveness and visual improvements -->
+<style>
+    .content-wrapper {
+        flex: 1;
+        background: linear-gradient(145deg, #fff, #e0e0e0);
+        padding: 0px;
+        box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    form input[type="text"], form input[type="file"] {
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #5D3F8B;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    form input[type="text"]:focus, form input[type="file"]:focus {
+        border-color: #6ebb4d;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transform: scale(1.05);
+    }
+
+    .btn-primary:hover {
+        background-color: #4e9f3d;
+        transform: scale(1.05);
+    }
+</style>
 {% endblock %}
