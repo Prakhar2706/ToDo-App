@@ -7,6 +7,7 @@ from django.contrib.auth import views as auth_views
 from django.core.exceptions import ValidationError
 from django import forms
 import re
+import requests
 from .models import *
 from .forms import *
 from django.contrib import messages
@@ -17,7 +18,24 @@ from django.contrib import messages
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
+
+        # Get reCAPTCHA response from form
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        secret_key = '6LdjM1wqAAAAAEaoJnqJ3vFAdpJu58IeR1txc5zO'
+        
+        # Send POST request to Google for verification
+        recaptcha_verification = requests.post(
+            'https://www.google.com/recaptcha/api/siteverify',
+            data={
+                'secret': secret_key,
+                'response': recaptcha_response
+            }
+        )
+        
+        # Parse the response from Google
+        recaptcha_result = recaptcha_verification.json()
+
+        if form.is_valid() and recaptcha_result.get('success'):
             user = form.save(commit=False)
             # Save first_name and last_name in the User model
             user.first_name = form.cleaned_data.get('first_name')
@@ -32,11 +50,51 @@ def register(request):
 
             login(request, user)
             return redirect('/')
+        else:
+            if not recaptcha_result.get('success'):
+                messages.error(request, 'Invalid reCAPTCHA. Please try again.')
+            if form.errors:
+                messages.error(request, 'Please fix the errors in the form.')
     else:
         form = CustomUserCreationForm()
     
     context = {'form': form}
     return render(request, 'tasks/register.html', context)
+
+
+# Login view
+def login_view(request):
+    if request.method == 'POST':
+        # Get reCAPTCHA response from form
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        secret_key = '6LdjM1wqAAAAAEaoJnqJ3vFAdpJu58IeR1txc5zO'
+        
+        # Send POST request to Google for verification
+        recaptcha_verification = requests.post(
+            'https://www.google.com/recaptcha/api/siteverify',
+            data={
+                'secret': secret_key,
+                'response': recaptcha_response
+            }
+        )
+        
+        # Parse the response from Google
+        recaptcha_result = recaptcha_verification.json()
+        
+        if recaptcha_result.get('success'):
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(request, username=username, password=password)
+            
+            if user is not None:
+                login(request, user)
+                return redirect('/')
+            else:
+                messages.error(request, 'Invalid username or password')
+        else:
+            messages.error(request, 'Invalid reCAPTCHA. Please try again.')
+    
+    return render(request, 'tasks/login.html')
 
 
 @login_required
