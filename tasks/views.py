@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from .UserCreationForm import CustomUserCreationForm
 from django.contrib.auth import views as auth_views
 from django.core.exceptions import ValidationError
